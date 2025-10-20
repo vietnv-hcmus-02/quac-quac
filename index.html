@@ -387,6 +387,10 @@
     </g>
 </svg>
     <div class="message" id="message"></div>
+    <audio id="bgMusic" loop>
+  <source src="atwaov.mp3" type="audio/mpeg">
+</audio>
+
   </div>
 
   <script>
@@ -423,9 +427,28 @@
     // letter slides up
     gsap.to(letter, { delay: 1, duration: 1, opacity: 1, y: -80, ease: "power2.out" });
 
-    // envelope fades away
-    gsap.to(envelope, { delay: 2, duration: 1.2, opacity: 0, onComplete: showContent });
-  }
+    // envelope fades away and then show content + play music
+    gsap.to(envelope, { 
+        delay: 2, 
+        duration: 1.2, 
+        opacity: 0, 
+        onComplete: () => {
+            showContent(); // your existing function
+            playMusic();   // new function to start music
+        }
+    });
+}
+
+// function to play background music
+function playMusic() {
+    const audio = document.getElementById("bgMusic");
+    if (audio) {
+        audio.play().catch(err => {
+            console.log("Autoplay blocked:", err);
+        });
+    }
+}
+
 
   // === Animation code ===
   const where = document.getElementById("where"),
